@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Prayer Focus</title>
+    <meta name="description" content="Official Privacy Policy for Prayer Focus Android App. Explaining our offline-first architecture, Accessibility Service usage, local storage, and zero data collection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b1210;
+            --surface-color: #121c18;
+            --surface-card: #16241f;
+            --surface-elevated: #1b2e27;
+            --primary: #10b981;
+            --primary-light: #34d399;
+            --primary-glow: rgba(16, 185, 129, 0.15);
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --gold-glow: rgba(245, 158, 11, 0.15);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(16, 185, 129, 0.3);
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --warning-bg: rgba(245, 158, 11, 0.1);
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Subtle geometric background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(245, 158, 11, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-highlight);
+            border-radius: 999px;
+            margin-bottom: 24px;
+        }
+
+        .brand-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-glow);
+            color: var(--gold);
+            border-radius: 50%;
+            font-size: 13px;
+        }
+
+        .brand-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 2.75rem;
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .meta-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item strong {
+            color: var(--text-primary);
+        }
+
+        /* Summary Highlights */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 36px 0;
+        }
+
+        .summary-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .summary-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+
+        .summary-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .summary-icon.green {
+            background: var(--primary-glow);
+            color: var(--primary-light);
+        }
+
+        .summary-icon.gold {
+            background: var(--gold-glow);
+            color: var(--gold-light);
+        }
+
+        .summary-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .summary-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Table of contents */
+        .toc-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin: 32px 0 48px;
+        }
+
+        .toc-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px 20px;
+        }
+
+        .toc-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            transition: color 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-list a:hover {
+            color: var(--primary-light);
+        }
+
+        .toc-list a::before {
+            content: '•';
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Policy Sections */
+        section {
+            margin-bottom: 48px;
+            scroll-margin-top: 32px;
+        }
+
+        h2.section-heading {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h2.section-heading .sec-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary-glow);
+            color: var(--primary-light);
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        h3.sub-heading {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin: 24px 0 10px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        p strong, li strong {
+            color: var(--text-primary);
+        }
+
+        ul, ol {
+            color: var(--text-secondary);
+            padding-left: 24px;
+            margin-bottom: 18px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Callout Box */
+        .callout {
+            background: var(--surface-card);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 18px 20px;
+            margin: 20px 0;
+        }
+
+        .callout.gold {
+            border-left-color: var(--gold);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            font-family: var(--font-display);
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .callout p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Technical Data Table */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: var(--surface-card);
+            font-size: 0.92rem;
+        }
+
+        th {
+            background: var(--surface-elevated);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-display);
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.local {
+            background: var(--primary-glow);
+            color: var(--primary-light);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge.none {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Contact card */
+        .contact-box {
+            background: linear-gradient(135deg, var(--surface-card) 0%, var(--surface-elevated) 100%);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            margin-top: 32px;
+        }
+
+        .contact-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-light);
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            margin-top: 8px;
+            padding: 8px 16px;
+            background: var(--primary-glow);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .email-link:hover {
+            background: rgba(16, 185, 129, 0.25);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0 60px;
+            margin-top: 60px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        footer p {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.1rem;
+            }
+            .meta-strip {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .toc-list {
+                grid-template-columns: 1fr;
+            }
+            section {
+                scroll-margin-top: 20px;
+            }
+        }
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="container">
+        <nav style="padding: 24px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <a href="/" style="display: inline-flex; align-items: center; gap: 8px; color: var(--primary-light); text-decoration: none; font-size: 14px; font-weight: 600; padding: 6px 14px; background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 999px; transition: border-color 0.2s ease;">
+                <span>←</span> Back to Homepage
+            </a>
+            <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-display);">Official Legal Document</span>
+        </nav>
+        <header>
+            <div class="brand-badge">
+                <span class="brand-icon">☪</span>
+                <span class="brand-title">PRAYER FOCUS FOR ANDROID</span>
+            </div>
+            <h1>Privacy Policy</h1>
+            <div class="meta-strip">
+                <div class="meta-item">
+                    <span>Developer:</span>
+                    <strong>Prayer Focus Team</strong>
+                </div>
+                <div class="meta-item">
+                    <span>App:</span>
+                    <strong>Prayer Focus (com.prayerfocus.app)</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Effective Date:</span>
+                    <strong>October 19, 2026</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- Summary Highlights -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-icon green">🛡️</div>
+                <h3>100% Offline Architecture</h3>
+                <p>No internet permission requested. No remote servers, APIs, or cloud sync. Your data never leaves your physical phone.</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon gold">🔒</div>
+                <h3>Restricted Accessibility Use</h3>
+                <p>Only detects active app package names. <code>canRetrieveWindowContent</code> is strictly disabled. No keystrokes, messages, or text read.</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon green">🚫</div>
+                <h3>Zero Tracking or Ads</h3>
+                <p>Zero advertising SDKs, zero analytics trackers, and zero crash reporting libraries. We collect no personal identifiers.</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon gold">📱</div>
+                <h3>Private Local Storage</h3>
+                <p>Your selected restricted apps and prayer preferences remain sealed in your phone's sandboxed Jetpack DataStore.</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <nav class="toc-card" aria-label="Table of Contents">
+            <h2>Contents</h2>
+            <ul class="toc-list">
+                <li><a href="#introduction">1. Introduction & Developer Identity</a></li>
+                <li><a href="#core-mission">2. Core Purpose & Offline Operation</a></li>
+                <li><a href="#accessibility-service">3. Accessibility Service & App Restriction</a></li>
+                <li><a href="#app-selection">4. Installed-App Selection & Package Visibility</a></li>
+                <li><a href="#prayer-timings">5. Prayer Timings, City Coordinates & Offline Engine</a></li>
+                <li><a href="#permissions">6. System Permissions & Alarms Explained</a></li>
+                <li><a href="#storage">7. Local Storage & Data Retention</a></li>
+                <li><a href="#no-collection">8. Zero Third-Party Services & No Data Sharing</a></li>
+                <li><a href="#user-control">9. Disabling Permissions & Data Deletion</a></li>
+                <li><a href="#contact">10. Contact Information & Inquiries</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- 1. Introduction -->
+            <section id="introduction">
+                <h2 class="section-heading">
+                    <span class="sec-num">1</span>
+                    Introduction & Developer Identity
+                </h2>
+                <p>
+                    This Privacy Policy governs the <strong>Prayer Focus</strong> Android mobile application (Package Identifier: <code>com.prayerfocus.app</code>), developed and maintained by the <strong>Prayer Focus Team</strong> ("we", "us", or "our").
+                </p>
+                <p>
+                    We believe that worship, prayer, and personal focus require the highest level of dignity and privacy. This policy provides a comprehensive, transparent, and accurate disclosure of how Prayer Focus functions, what device features and permissions it utilizes, and how your privacy is protected. Every statement in this policy reflects what is actually implemented in the codebase.
+                </p>
+            </section>
+
+            <!-- 2. Core Purpose -->
+            <section id="core-mission">
+                <h2 class="section-heading">
+                    <span class="sec-num">2</span>
+                    Core Purpose & Offline Operation
+                </h2>
+                <p>
+                    The sole purpose of Prayer Focus is to assist Muslims in maintaining focus during the five daily prayers (Fajr, Zuhr, Asr, Maghrib, and Isha) by temporarily restricting access to user-selected distracting apps during designated 10-minute prayer windows.
+                </p>
+                <div class="callout">
+                    <div class="callout-title">Verified Manifest Status: No Internet Permission</div>
+                    <p>
+                        Prayer Focus does not declare or request the <code>android.permission.INTERNET</code> permission in its Android Manifest. The application has no technical capability to communicate over the internet, make HTTP/HTTPS network requests, transmit device data, or upload files to any remote server.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3. Accessibility Service -->
+            <section id="accessibility-service">
+                <h2 class="section-heading">
+                    <span class="sec-num">3</span>
+                    Accessibility Service & App Restriction Policy
+                </h2>
+                <p>
+                    Prayer Focus includes an Android Accessibility Service (<code>PrayerFocusAccessibilityService</code>). Google Play Developer Program Policies strictly regulate accessibility tools. Below are the precise technical details of our implementation:
+                </p>
+
+                <h3 class="sub-heading">A. Why the Accessibility Service is Needed</h3>
+                <p>
+                    Android's security architecture isolates applications into independent sandboxes. In order for Prayer Focus to fulfill its core function—preventing access to selected distracting apps while a prayer session is active—the system must recognize when one of those selected apps has been brought to the foreground by the user, so that Prayer Focus can display its peaceful pause and reminder screen.
+                </p>
+
+                <h3 class="sub-heading">B. Events and Data Accessed</h3>
+                <ul>
+                    <li><strong>Monitored Events:</strong> The service is registered exclusively for window state transitions (<code>AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED</code> and <code>TYPE_WINDOWS_CHANGED</code>).</li>
+                    <li><strong>Information Accessed:</strong> The service reads only the package identifier string (such as <code>com.example.app</code>) of the active foreground window.</li>
+                </ul>
+
+                <h3 class="sub-heading">C. Explicit Technical Guarantees (What We Never Access)</h3>
+                <div class="callout gold">
+                    <div class="callout-title">canRetrieveWindowContent = false</div>
+                    <p>
+                        Our service configuration file explicitly specifies <code>android:canRetrieveWindowContent="false"</code>. This hardware-enforced Android restriction ensures Prayer Focus <strong>cannot inspect view hierarchies, read text on your screen, view form fields, monitor typing or keystrokes, capture login credentials or passwords, read chats or personal messages, or capture screenshots</strong>.
+                    </p>
+                </div>
+                <ul>
+                    <li><strong>No UI Automation:</strong> Prayer Focus does not perform automated clicks, gestures, text input, or interactions inside any third-party application.</li>
+                    <li><strong>No Anti-Disabling Exploits:</strong> The service does not tamper with Android system settings or prevent users from turning off the service or uninstalling the app.</li>
+                    <li><strong>Prominent In-App Disclosure:</strong> Before navigating the user to system settings, Prayer Focus presents a prominent disclosure dialog explaining the purpose and scope of the Accessibility Service.</li>
+                </ul>
+
+                <h3 class="sub-heading">D. How Selected-App Blocking Works</h3>
+                <p>
+                    When a prayer session begins, Prayer Focus enters an active focus state. If the Accessibility Service detects that an app brought to the foreground matches one of the package names you explicitly selected in your blocked apps list, Prayer Focus launches its own <code>FocusLockActivity</code> over the screen to gently remind you that your prayer focus window is in progress.
+                </p>
+                <p>
+                    <strong>Safety Exclusions:</strong> Essential system apps are hardcoded as non-blockable. Prayer Focus will never block or restrict:
+                </p>
+                <ul>
+                    <li>Emergency dialers and phone call services (<code>ACTION_DIAL</code>, <code>ACTION_EMERGENCY_DIAL</code>, Telecom default dialer)</li>
+                    <li>Android System Settings (<code>com.android.settings</code>, <code>com.google.android.settings</code>)</li>
+                    <li>System UI and Navigation (<code>com.android.systemui</code>)</li>
+                    <li>Package Installer and Permission Controllers</li>
+                    <li>Default Home Launchers and Personal Safety Hubs</li>
+                </ul>
+
+                <h3 class="sub-heading">E. Data Storage and Transmission</h3>
+                <p>
+                    Package names detected by the Accessibility Service are evaluated instantaneously in transient device RAM and are <strong>never written to persistent disk storage, never logged to permanent files, and never transmitted over any network</strong>.
+                </p>
+            </section>
+
+            <!-- 4. App Selection -->
+            <section id="app-selection">
+                <h2 class="section-heading">
+                    <span class="sec-num">4</span>
+                    Installed-App Selection & Package Visibility
+                </h2>
+                <p>
+                    In order for you to choose which applications to restrict during prayer times, Prayer Focus queries launchable user applications on your device using Android's standard <code>CATEGORY_LAUNCHER</code> intent filter.
+                </p>
+                <ul>
+                    <li><strong>Narrow Package Queries:</strong> Prayer Focus complies with Google Play's Package Visibility policy by declaring targeted launcher queries in its manifest, rather than requesting broad unrestricted package scanning permissions (such as <code>QUERY_ALL_PACKAGES</code>).</li>
+                    <li><strong>Local Selection Only:</strong> The list of installed apps is displayed only inside your local App Selector screen. Your chosen selections are saved as package identifier strings in your device's private preferences. Your installed app inventory is never exported or shared.</li>
+                </ul>
+            </section>
+
+            <!-- 5. Prayer Timings -->
+            <section id="prayer-timings">
+                <h2 class="section-heading">
+                    <span class="sec-num">5</span>
+                    Prayer Timings, City Coordinates & Offline Engine
+                </h2>
+                <p>
+                    Prayer Focus calculates Islamic prayer times 100% offline using the verified open-source <strong>Batoul Apps Adhan Library (v1.2.1)</strong>.
+                </p>
+                <div class="callout">
+                    <div class="callout-title">Zero Location Tracking (No GPS Permission)</div>
+                    <p>
+                        Prayer Focus <strong>does not request or use</strong> <code>ACCESS_FINE_LOCATION</code> or <code>ACCESS_COARSE_LOCATION</code>. The app does not access your GPS, cell tower signals, Wi-Fi scans, or real-time physical device coordinates.
+                    </p>
+                </div>
+                <p>
+                    Instead, you choose your city manually from a predefined list of built-in regional geographic coordinates (such as Rawalpindi, Islamabad, Lahore, Karachi, Peshawar, Quetta, and Abbottabad). You may also customize your preferred Islamic calculation method (such as Karachi, Muslim World League, ISNA, Umm al-Qura, Egyptian) and Asr jurisprudential school (Hanafi or Shafi'i). All calculations occur purely through astronomical equations on your phone processor.
+                </p>
+            </section>
+
+            <!-- 6. System Permissions -->
+            <section id="permissions">
+                <h2 class="section-heading">
+                    <span class="sec-num">6</span>
+                    System Permissions & Background Reliability
+                </h2>
+                <p>
+                    Prayer Focus requests only the minimum set of permissions necessary to deliver timely prayer reminders and session management:
+                </p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Permission</th>
+                                <th>Declared In Manifest</th>
+                                <th>Purpose & Technical Scope</th>
+                                <th>Data Destination</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>SCHEDULE_EXACT_ALARM</code></td>
+                                <td>Yes (Android 12+)</td>
+                                <td>Allows <code>AlarmManager</code> to fire precise alarms at calculated prayer times, even when the phone is in deep Doze power-saving state.</td>
+                                <td><span class="badge local">Local OS Only</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>POST_NOTIFICATIONS</code></td>
+                                <td>Yes (Android 13+)</td>
+                                <td>Enables local visual status notifications when a 10-minute focus session starts. No remote push notifications.</td>
+                                <td><span class="badge local">Local Screen Only</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>RECEIVE_BOOT_COMPLETED</code></td>
+                                <td>Yes</td>
+                                <td>Allows <code>BootReceiver</code> to safely reschedule upcoming prayer alarms when your phone reboots, and gracefully expire past sessions.</td>
+                                <td><span class="badge local">Local OS Only</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>BIND_ACCESSIBILITY_SERVICE</code></td>
+                                <td>Yes</td>
+                                <td>Allows the service to detect foreground package names for restricted apps during an active session.</td>
+                                <td><span class="badge local">Transient RAM Only</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>INTERNET</code></td>
+                                <td><span class="badge none">NOT REQUESTED</span></td>
+                                <td>The app does not have internet access. Zero data transmission.</td>
+                                <td><span class="badge none">None</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>ACCESS_FINE_LOCATION</code></td>
+                                <td><span class="badge none">NOT REQUESTED</span></td>
+                                <td>No GPS or physical geolocation hardware access.</td>
+                                <td><span class="badge none">None</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="sub-heading">Battery Optimization Settings</h3>
+                <p>
+                    Modern Android versions and custom manufacturer skins (such as Samsung One UI, Xiaomi HyperOS, Vivo Funtouch, and Oppo ColorOS) employ aggressive background task killers that can terminate alarm schedulers. Prayer Focus provides standard system guidance through Android's official <code>ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS</code> so you can choose to allow reliable background alarm triggering. Prayer Focus does not employ undocumented background exploits or battery bypasses.
+                </p>
+            </section>
+
+            <!-- 7. Local Storage -->
+            <section id="storage">
+                <h2 class="section-heading">
+                    <span class="sec-num">7</span>
+                    Local Storage & Data Retention
+                </h2>
+                <p>
+                    All settings created or modified in Prayer Focus are saved locally in private app sandboxed storage via <strong>Android Jetpack DataStore (Preferences DataStore)</strong>.
+                </p>
+                <p><strong>Stored items include:</strong></p>
+                <ul>
+                    <li>Selected city identifier and calculation parameters (Method & Madhab)</li>
+                    <li>User-configured prayer minute offsets and manual Jamaat times</li>
+                    <li>Set of package names selected by the user for restriction</li>
+                    <li>Session status flags and timestamps (to prevent repeating or overlapping sessions)</li>
+                    <li>Automatic blocking toggle state (enabled/disabled/paused for today)</li>
+                </ul>
+                <p>
+                    <strong>Data Retention:</strong> These preferences remain strictly inside the app's private sandbox on your device for as long as the application remains installed. They are never backed up to third-party tracking services or external clouds.
+                </p>
+            </section>
+
+            <!-- 8. No Third Parties -->
+            <section id="no-collection">
+                <h2 class="section-heading">
+                    <span class="sec-num">8</span>
+                    Zero Third-Party Services, Ads, & Data Sharing
+                </h2>
+                <p>
+                    We have verified the codebase dependencies and architecture against commercial data collection practices:
+                </p>
+                <ul>
+                    <li><strong>No Advertising:</strong> Prayer Focus contains no advertising banners, interstitials, rewarded ads, or mobile advertising SDKs (such as Google AdMob, Unity, or AppLovin).</li>
+                    <li><strong>No Analytics or Telemetry:</strong> Prayer Focus contains no analytics or tracking SDKs (such as Google Analytics for Firebase, Mixpanel, Segment, or Facebook SDK). We do not record user events, behavioral metrics, or screen viewing duration.</li>
+                    <li><strong>No Crash Reporting Telemetry:</strong> Prayer Focus contains no external crash reporting tools (such as Firebase Crashlytics or Sentry). Crash logs are not gathered or transmitted.</li>
+                    <li><strong>No Data Selling or Sharing:</strong> Because we collect zero personal data, we never sell, rent, monetize, broker, or disclose your information to any third party, government agency, or marketing organization.</li>
+                </ul>
+            </section>
+
+            <!-- 9. User Control -->
+            <section id="user-control">
+                <h2 class="section-heading">
+                    <span class="sec-num">9</span>
+                    How Users Can Disable Permissions & Delete Data
+                </h2>
+                <p>
+                    You retain complete, absolute control over all permissions, restricted apps, and stored data at all times:
+                </p>
+
+                <h3 class="sub-heading">A. Disabling or Revoking Permissions</h3>
+                <ul>
+                    <li><strong>Accessibility Service:</strong> Open your phone's <code>Settings &gt; Accessibility &gt; Downloaded Apps (or Installed Services) &gt; Prayer Focus</code> and switch the toggle to OFF.</li>
+                    <li><strong>Exact Alarms:</strong> Open <code>Settings &gt; Apps &gt; Special App Access &gt; Alarms &amp; Reminders &gt; Prayer Focus</code> and disable the permission.</li>
+                    <li><strong>Notifications:</strong> Open <code>Settings &gt; Apps &gt; Prayer Focus &gt; Notifications</code> and switch off notifications.</li>
+                    <li><strong>Automatic Blocking:</strong> You can temporarily pause automatic focus for the day or disable automatic scheduling entirely with a single tap in the Prayer Focus dashboard.</li>
+                </ul>
+
+                <h3 class="sub-heading">B. Removing or Deleting Stored Data</h3>
+                <ul>
+                    <li><strong>In-App Unselection:</strong> You can deselect any restricted app at any time by opening the App Selector screen and unchecking it.</li>
+                    <li><strong>Clearing App Data:</strong> You can wipe all preferences, city choices, and blocked app lists by going to your phone's <code>Settings &gt; Apps &gt; Prayer Focus &gt; Storage &gt; Clear Storage / Clear Data</code>.</li>
+                    <li><strong>Uninstalling the App:</strong> Uninstalling Prayer Focus from your Android device immediately and permanently purges all local DataStore preferences from your device storage.</li>
+                </ul>
+            </section>
+
+            <!-- 10. Contact -->
+            <section id="contact">
+                <h2 class="section-heading">
+                    <span class="sec-num">10</span>
+                    Contact Information & Inquiries
+                </h2>
+                <p>
+                    If you have questions, feedback, or need clarification regarding this Privacy Policy or the security practices of Prayer Focus, please contact the developer:
+                </p>
+                <div class="contact-box">
+                    <h3>Prayer Focus Developer Contact</h3>
+                    <p>Developer: <strong>Prayer Focus Team</strong></p>
+                    <p>Official Support &amp; Privacy Contact Email:</p>
+                    <a href="mailto:malighalib461@gmail.com" class="email-link">
+                        ✉ malighalib461@gmail.com
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p><strong>Prayer Focus for Android</strong> • Version 1.0.0</p>
+            <p>© 2026 Prayer Focus Team. All rights reserved.</p>
+            <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
+                This policy was last updated on October 19, 2026.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
